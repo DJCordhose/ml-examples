@@ -2,5 +2,6 @@
 Machine Learning Examples
 
 ## Sample data sets
-- Preprocessing: http://archive.ics.uci.edu/ml/datasets/Adult
+- Pre-processing: http://archive.ics.uci.edu/ml/datasets/Adult
 - Supervised Learning: http://archive.ics.uci.edu/ml/datasets/Iris
+- Regression: https://archive.ics.uci.edu/ml/datasets/Housing
