@@ -6,7 +6,6 @@ df = pd.read_csv('../../datasets/Iris/iris_dirty.csv',
                  header=None,
                  encoding='iso-8859-15',
                  names=['sepal length', 'sepal width', 'petal length', 'petal width', 'class'])
-print(df)
 
 # missing values, line 83, second field just not there
 # invalid value, line 58, third field is 'n/a'
