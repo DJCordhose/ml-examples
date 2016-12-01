@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="chrome=IE8">
+		<meta name="description" content="When we discuss prediction models, prediction errors can be decomposed into two main subcomponents we care about: error due to bias and error due to variance. There is a tradeoff between a model's ability to minimize bias and variance. Understanding these two types of error can help us diagnose model results and avoid the mistake of over- or under-fitting." >
+
+		<script src="random.js" type="text/javascript"></script>
+        <script src="jquery.js"></script>
+		<script src="d3.js" type="text/javascript"></script>
+		<script src="doc.js" type="text/javascript"></script>
+		<script src="scatter.js" type="text/javascript"></script>
+		<link href='colorbrewer.css' rel='stylesheet' type='text/css'>
+		<link href='doc.css' rel='stylesheet' type='text/css'>
+		<title>Understanding the Bias-Variance Tradeoff</title>
+	</head>
+	<body>
+		<div id="document">
+			<div class="content-node document selected">
+				<div class="content">
+                    <h2>Kap 3 ohne Referenz auf over Underfitting und Test und Kontrollfehler</h2>
+                    <p>Wenn wir uns die Vorhersagen, die wir mit unserem Machine Learning Algorithmus machen, als Schüsse auf eine Zielscheibe vorstellen, dann können wir gut oder weniger gut schießen.</p>
+                    <p>Mögliche Ausgänge bei mehreren Schüssen könnten sein:
+                    <ol>
+                        <li>perfekt: alle Schüsse in die Mitte
+                        <li>zufällig: die Schüsse landen irgendwo
+                        <li>high bias: immer leicht daneben
+                        <li>high variance: hohe Streuung
+                        <li>beides: immer leicht daneben und hohe Streuung
+                    </ol>
+                    <p>
+                        Wenn wir uns das als ein Schießen mit einem Luftgewehr auf dem Rummel vorstellen, könnten dies die Gründe sein.
+                    </p>
+
+                    <ol>
+                        <li>perfekt: beste Bedingungen und Kompetenz
+                        <li>zufällig: schießen mit Augen zu
+                        <li>high bias: Zieleinrichtung verzogen
+                        <li>high variance: kurze Windböhen aus unterschiedlichen Richtungen
+                        <li>beides: beides
+                    </ol>
+<p>So könnte unsere Zielscheine nach ein paar Schüssen aussehen</p>
+<div class='content-node image'><div class='image-content'>
+    <table class="snug">
+        <tr>
+            <td>
+                <div id="bullsEyeLBLV"></div>
+                <small>perfekt</small>
+            </td>
+            <td>
+                <div id="bullsEyeRandom"></div>
+                <small>zufällig</small>
+            </td>
+            <td>
+                <div id="bullsEyeLBHV"></div>
+                <small>high variance</small>
+            </td>
+            <td>
+                <div id="bullsEyeHBLV"></div>
+                <small>high bias</small>
+            </td>
+            <td>
+                <div id="bullsEyeHBHV"></div>
+                <small>beides</small>
+            </td>
+        </tr>
+    </table>
+    <script>
+Math.seedrandom(3);
+drawScatter("#bullsEyeHBLV", .5, .12);
+drawScatter("#bullsEyeLBLV", .05, .12);
+drawScatter("#bullsEyeHBHV", .7, .5);
+drawScatter("#bullsEyeLBHV", .05, .5);
+drawScatter("#bullsEyeRandom", .3, 1);
+    </script>
+
+</div>
+</div>
+                                        <p>
+Perfekt geht nicht. Selbst wenn unsere Zieltechnik ideal ist, gibt es immer noch einen Fehler,
+                        den wir nie ausgleichen können. Z.B. ein plötzlicher Windstoß oder
+                        Veränderungen im Material durch Erwärmung.
+                        Dazu kommt, dass wir in typischen Szenarien nie Bias und
+                        Varianz gleichzeitig minimieren können. Warum das so ist sehen wir im nächsten Kapitel.
+                    </p>
+                    <p><em>                        Überleitung und Ende des Kapitels. In Kapitel 4 dann noch mal mit Training- und Test-Daten und Overfitting, Underfitting.
+</em></p>
+
+<br>
+                    <br>
+                    <br>
+                    <br>
+        <h2>Kap 4 mit Referenz auf over Underfitting und Test und Kontrollfehler</h2>
+<div class='content-node image'><div class='image-content'>
+    <table class="snug">
+        <tr>
+            <th></th>
+            <td>
+                Low Variance
+            </td>
+            <td>
+                High Variance
+            </td>
+        </tr>
+        <tr>
+            <td class="r90">
+                Low Bias
+            </td>
+            <td>
+                <div id="bullsEyeLBLV4"></div>
+                <small>Ideal: typically impossible</small>
+            </td>
+            <td>
+                <div id="bullsEyeLBHV4"></div>
+                <small>Overfitting</small>
+            </td>
+        </tr>
+        <tr>
+            <td class="r90">
+                High Bias
+            </td>
+            <td>
+                <div id="bullsEyeHBLV4"></div>
+                <small>Auch Overfitting? (aber anders?)</small>
+            </td>
+            <td>
+                <div id="bullsEyeHBHV4"></div>
+                <small>Underfitting</small>
+            </td>
+        </tr>
+    </table>
+    <script>
+Math.seedrandom(3);
+drawScatter("#bullsEyeHBLV4", .5, .12);
+drawScatter("#bullsEyeLBLV4", .05, .12);
+drawScatter("#bullsEyeHBHV4", .7, .5);
+drawScatter("#bullsEyeLBHV4", .05, .5);
+    </script>
+
+</div>
+</div>
+<br>
+                    <br>
+                    <br>
+                    <br>
+
+                    <div class='content-node image'><div class='image-content'>
+    <table class="snug">
+        <tr><th class="r90">Religiousness &rarr;</th><td><div id="chart_rawdata_knn" class="knn_chart"></div></td></tr>
+        <tr><th></th><th>Wealth &rarr;</th></tr>
+    </table>
+                    </div></div>
+
+<br><br><br><br><br><br>
+
+<div class='content-node image'><div class='image-content'>
+    <div id="chart_knn1" class="knn_chart"></div>
+</div></div>
+
+                        <br><br><br><br><br><br>
+
+<div class='content-node image'><div class='image-content'>    
+    <div id="chart_predict_knn" class="knn_chart"></div>
+</div></div>
+
+                    <br><br><br><br><br><br>
+
+<div class='content-node image'><div class='image-content'>
+    <div id="chart_region_knn" class="knn_chart"></div><br>
+    <i>k</i>-Nearest Neighbors: <span id="knn-n">1</span><br>
+    <input id='knnSlider' type="range" min="1" max="100" style="width:550px" onkeyup="knnUpdatePredictions($('#knnSlider').val());$('#knn-n').html( $('#knnSlider').val() );" onchange="knnUpdatePredictions($('#knnSlider').val());$('#knn-n').html( $('#knnSlider').val() );" value="1">
+</div></div>
+
+        <p><a class="button" href="javascript:generateTraining()">Generate New Training Data</a></p>
+                </div>
+            </div>
+        </div>
+    <script type="application/javascript">
+Math.seedrandom(2);
+
+var width = 600,
+    height = 400;
+var padding = 40;
+
+var vertices;
+
+var chart_rawdata = d3.select("#chart_rawdata_knn").append("svg").attr("width", width).attr("height", height).attr("class", "RdBu");
+
+var chart_knn1 = d3.select("#chart_knn1").append("svg").attr("width", width).attr("height", height).attr("class", "RdBu");
+
+
+var chart_predict_knn = d3.select("#chart_predict_knn").append("svg").attr("width", width).attr("height", height).attr("class", "RdBu");
+
+var chart_region_knn = d3.select("#chart_region_knn").append("svg").attr("width", width).attr("height", height).attr("class", "RdBu");
+
+var test_data = d3.range(80).map(function () {
+    var x = Math.random() * (width - padding) + padding / 2;
+    var y = Math.random() * (height - padding) + padding / 2;
+    return [x, y, 0];
+});
+
+
+var region_data = [];
+var region_width = 12;
+region_data = makeHexGrid(width, height, region_width);
+for (var i = 0; i < region_data.length; i++) {
+    region_data[i].v = 0
+}
+
+
+var initData = false;
+
+        generateTraining();
+    </script>
+	</body>
+</html>
