@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="chrome=IE8">
+		<meta name="description" content="When we discuss prediction models, prediction errors can be decomposed into two main subcomponents we care about: error due to bias and error due to variance. There is a tradeoff between a model's ability to minimize bias and variance. Understanding these two types of error can help us diagnose model results and avoid the mistake of over- or under-fitting." >
+
+		<script src="random.js" type="text/javascript"></script>
+        <script src="jquery.js"></script>
+		<script src="d3.js" type="text/javascript"></script>
+		<script src="doc.js" type="text/javascript"></script>
+		<script src="scatter.js" type="text/javascript"></script>
+		<link href='colorbrewer.css' rel='stylesheet' type='text/css'>
+		<link href='doc.css' rel='stylesheet' type='text/css'>
+		<title>Understanding the Bias-Variance Tradeoff</title>
+	</head>
+	<body>
+		<div id="document">
+<div class='content-node image'><div class='image-content'>
+    <h2>Over- und Underfitting</h2>
+    <p>Die Komplexität des Modells bestimmt, wie gut es die Realität abbilden kann.
+        Das kann man anhand eines Regressions-Beispiels sehen, in dem wir versuchen, eine Menge von Datenpunkten mit einer Funktion zu beschreiben.
+        Für diese Funktion nehmen wir ein Polynom und der der Grad des Polynoms beschränkt die mögliche Komplexität des Modells.
+    </p>
+    <img src="img/ng_bias_variance.png" height="300">
+    <p>Eine Gerade (links) ist zu einfach für die Datenbpunkte, wir passen die Punkte nicht richtig ab, das nennt man 'underfitting' oder 'high bias'.</p>
+        <p>Ein hochgradiges Polynom (rechts) verbindet zwar alle Datenpunkte, aber es wirkt nicht wie die einfachste Lösung, es sieht schon intuitiv zu speziell aus. </p>
+    <p>Das Modell in der Mitte scheint das beste. Es passt auf alle Datenpunkte, wirkt aber gerade komplex genug.</p>
+    <p>Dies sind erst einmal nur Eindrücke, aber wenn wir uns neben den Trainingsdaten nun auch Testdaten ansehen, können wir unsere Untuition greifbarer machen und sehen, dass sie ganz richtig ist:</p>
+    <img src="img/ng_bias_variance_training_test.png" height="300">
+    <p>Der rosa Graph beschreibt den Fehler unserer Funktion für die Datenpunkte, die wir zum Training verwenden. Diesen Fehler können wir immer weiter minimieren, indem wir die Punkte perfekt treffen.</p>
+    <p>Nun wird es aber spannend, weil wir Test-Daten hinzunehmen, die wir bisher nicht in Betracht gezogen haben. Damit können wir überprüfen, wie gut unser Modell am 'echten' Modell dran ist. Dies ist die rote Kurve.</p>
+    <p>Im Fall unseres Polynoms sehen wir, dass diese Kurve irgendwann wieder hoch geht, wenn wir den Grad erhöhen. Kurz bevor sie wieder hoch geht, erreichen wie den Sweet-Spot, also die beste Konfiguration unseres Modells. </p>
+    <p>Auf der rechten Seite sehen wir das zu komplexe Modell, das für Test-Daten tatsächlich schlecht abschneidet.</p>
+    <p>Mit diesem Handwerkszeug können wir nun Over- und Underfitting besser verstehen:</p>
+    <img src="img/ng_overfitting_underfitting.png" height="300">
+    <p>Wir sehen auch, dass wir zumindest in diesem Beispiel Bias und Variance nicht gleichzeitig minimieren können. Je stärker wir den Bias minimieren, desto größer wird die Varianz.</p>
+    <p>Wenn wir auf das Ausdrucksmittel unserer Zielscheiben zurück kommen wollen, kann man den Fehler von Trainings- und Testdaten wieder als mehr oder weniger gute Treffer darstellen.
+        Je größer der Fehler, desto weiter weg ist der Treffer von der Mitte der Zielscheibe. Dabei stellen die schwarzen Punkte Trainingsdaten, die grauen Testdaten dar: </p>
+    <div>
+    <table  class="snug">
+        <!--<tr>-->
+            <!--<th></th>-->
+            <!--<th>-->
+                <!--Kleiner Fehler <br>bei Trainigsdaten-->
+            <!--</th>-->
+            <!--<th>-->
+                <!--Großer Fehler <br>bei Trainigsdaten-->
+            <!--</th>-->
+        <!--</tr>-->
+        <tr>
+            <!--<th class="r90" style="width: 20px">-->
+                <!--Kleiner Fehler bei Testdaten / Crossvalidation-->
+            <!--</th>-->
+            <td>
+                <div id="underfitting2"></div>
+                <small>Underfitting, High Bias</small>
+            </td>
+            <td>
+                <div id="sweetSpot"></div>
+                <small>Sweet Spot</small>
+            </td>
+            <td>
+                <div id="overfitting"></div>
+                <small>Overfitting, High Variance</small>
+            </td>
+            <!--<td>-->
+                <!--<div id="underfitting"></div>-->
+                <!--<small>Underfitting, High Bias</small>-->
+            <!--</td>-->
+        </tr>
+        <!--<tr style="height: 20px"></tr>-->
+        <!--<tr>-->
+            <!--<th class="r90">-->
+            <!--Großer Fehler bei Testdaten / Crossvalidation-->
+
+            <!--</th>-->
+            <!--<td>-->
+                <!--<div id="bullsEyeHBLV4"></div>-->
+                <!--<small>Auch Overfitting? (aber anders?)</small>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div id="bullsEyeHBHV4"></div>-->
+                <!--<small>Underfitting</small>-->
+            <!--</td>-->
+        <!--</tr>-->
+    </table>
+    <script>
+Math.seedrandom(4);
+var sweetSpot = drawBoard("#sweetSpot");
+Math.seedrandom(3);
+drawHits(sweetSpot, .05, .12, false);
+Math.seedrandom(4);
+drawHits(sweetSpot, .05, .15, true);
+
+
+var overfitting = drawBoard("#overfitting");
+Math.seedrandom(3);
+drawHits(overfitting, .01, .06, false);
+Math.seedrandom(4);
+drawHits(overfitting, .05, .5, true);
+
+//var underfitting = drawBoard("#underfitting");
+//Math.seedrandom(3);
+//Math.seedrandom(4);
+//drawHits(underfitting, .5, .12, true);
+//Math.seedrandom(3);
+//drawHits(underfitting, .5, .08, false);
+
+var underfitting2 = drawBoard("#underfitting2");
+Math.seedrandom(3);
+//Math.seedrandom(4);
+drawHits(underfitting2, .4, .5, true);
+Math.seedrandom(4);
+drawHits(underfitting2, .3, .6, false);
+
+//drawScatter("#bullsEyeHBLV4", .5, .12);
+//drawScatter("#bullsEyeLBLV4", .05, .12);
+//drawScatter("#bullsEyeHBHV4", .7, .5);
+//drawScatter("#bullsEyeLBHV4", .05, .5);
+    </script>
+    </div>
+    <p>Ganz links sehen wir wieder 'Underfitting'. Der Fehler bei Test- und Trainingsdaten ist groß. Kein gutes Ergebnis.</p>
+    <p>Wir trainieren dann unser Modell, sodass der Fehler bei Trainings- und Testdaten zurück geht und gelangen auf das Ergebnis in der Mitte. Fehlerraten sind ähnlich, und möglichst gering. </p>
+    <p>Wenn wir unser Modell nun weiter auf die Trainingsdaten abstimmen geht deren Fehler weiter zurück und wir sehen noch genauere Treffer in der Mitte der Scheibe.
+        Allerdings geht dadruch die Fehlerrate für Datensätze, die wir nicht zum Training benutzt haben nach oben.
+    </p>
+    <p>Man könnte denken: warum nehmen wir dann nicht alle Datensätze und trainieren unser Modell einfach perfekt immer weiter. Das Problem dabei ist: typischerweise soll unser trainiertes System von den bekannten Datensätzen abstrahieren können und auch neue, ähnliche Datensätze richtig treffen bzw. klassifizieren.
+    </p>
+    <p>Kehren wir nun zu unserem Beispiel der Schüsse auf dem Rummel zurück.
+        Auch hier haben wir ein Regressions-Beispiel, bei dem wir eine Reihe von Features auf Schußposition (x,y,z) und Neigung des Laufs (x, y) abbilden.
+        Das Bild mit der Zielscheibe funktioniert hier natürlich noch besser, da man sich jeden Datenpunkt tatsächlich wie einen Schuß vorstellen kann. Die schwarzen Punkte wären dann Schüsse unter bekannten (idealen) Bedingungen, mit denen man das eigenen Schießen trainiert, während die grauen die auf dem Rummel abgegebenen Schüsse sein könnten.</p>
+</div>
+</div>
+<br>
+                </div>
+            </div>
+        </div>
+	</body>
+</html>

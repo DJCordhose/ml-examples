@@ -23,18 +23,18 @@
                     <ol>
                         <li>perfekt: alle Schüsse in die Mitte
                         <li>zufällig: die Schüsse landen irgendwo
-                        <li>high bias: immer leicht daneben
+                        <li>high bias: immer gleichmäßig daneben
                         <li>high variance: hohe Streuung
                         <li>beides: immer leicht daneben und hohe Streuung
                     </ol>
                     <p>
-                        Wenn wir uns das als ein Schießen mit einem Luftgewehr auf dem Rummel vorstellen, könnten dies die Gründe sein.
+                        Wenn wir uns das als ein Schießen mit einem Luftgewehr auf dem Rummel vorstellen, könnten dies die Gründe sein:
                     </p>
 
                     <ol>
                         <li>perfekt: beste Bedingungen und Kompetenz
                         <li>zufällig: schießen mit Augen zu
-                        <li>high bias: Zieleinrichtung verzogen
+                        <li>high bias: Zieleinrichtung verzogen (ausgleichbar durch versetztes Zielen)
                         <li>high variance: kurze Windböhen aus unterschiedlichen Richtungen
                         <li>beides: beides
                     </ol>
@@ -51,12 +51,12 @@
                 <small>zufällig</small>
             </td>
             <td>
-                <div id="bullsEyeLBHV"></div>
-                <small>high variance</small>
-            </td>
-            <td>
                 <div id="bullsEyeHBLV"></div>
                 <small>high bias</small>
+            </td>
+            <td>
+                <div id="bullsEyeLBHV"></div>
+                <small>high variance</small>
             </td>
             <td>
                 <div id="bullsEyeHBHV"></div>
@@ -66,8 +66,11 @@
     </table>
     <script>
 Math.seedrandom(3);
+function drawLBLV(selector, color) {
+    drawScatter(selector, .05, .12, color);
+}
+drawLBLV("#bullsEyeLBLV");
 drawScatter("#bullsEyeHBLV", .5, .12);
-drawScatter("#bullsEyeLBLV", .05, .12);
 drawScatter("#bullsEyeHBHV", .7, .5);
 drawScatter("#bullsEyeLBHV", .05, .5);
 drawScatter("#bullsEyeRandom", .3, 1);
@@ -76,7 +79,8 @@ drawScatter("#bullsEyeRandom", .3, 1);
 </div>
 </div>
                                         <p>
-Perfekt geht nicht. Selbst wenn unsere Zieltechnik ideal ist, gibt es immer noch einen Fehler,
+                                            Perfekt ist natürlich unser Ideal, ist in der Praxis aber typischerweise leider nicht erreichbar.
+Selbst wenn unsere Zieltechnik ideal ist, gibt es immer noch einen Fehler,
                         den wir nie ausgleichen können. Z.B. ein plötzlicher Windstoß oder
                         Veränderungen im Material durch Erwärmung.
                         Dazu kommt, dass wir in typischen Szenarien nie Bias und
@@ -92,52 +96,90 @@ Perfekt geht nicht. Selbst wenn unsere Zieltechnik ideal ist, gibt es immer noch
         <h2>Kap 4 mit Referenz auf over Underfitting und Test und Kontrollfehler</h2>
 <p>Hier dann mit einer Systematik, nicht über bias/variance, und auch nicht über Over- oder Underfitting geht,
     sondern über Loss bei Test- und Trainingsdaten</p>
-<img src="kap4-systematik.jpg" width="1000px">
-                    <h1 style="color: red">Das hier anpassen auf Skizze oben</h1>
+                    <p>Das dann in Kapitel 4.5, danach kann man dann in 4.6 noch mal auf den Einfluss der Regularisierung eingehen</p>
+<!--<img src="kap4-systematik.jpg" width="1000px">-->
+
 <div class='content-node image'><div class='image-content'>
-    <table class="snug">
+    <table  class="snug">
+        <!--<tr>-->
+            <!--<th></th>-->
+            <!--<th>-->
+                <!--Kleiner Fehler <br>bei Trainigsdaten-->
+            <!--</th>-->
+            <!--<th>-->
+                <!--Großer Fehler <br>bei Trainigsdaten-->
+            <!--</th>-->
+        <!--</tr>-->
         <tr>
-            <th></th>
+            <!--<th class="r90" style="width: 20px">-->
+                <!--Kleiner Fehler bei Testdaten / Crossvalidation-->
+            <!--</th>-->
             <td>
-                Low Variance
+                <div id="sweetSpot"></div>
+                <small>Sweet Spot</small>
             </td>
             <td>
-                High Variance
+                <div id="overfitting"></div>
+                <small>Overfitting, High Variance</small>
+            </td>
+            <td>
+                <div id="underfitting"></div>
+                <small>Underfitting, High Bias</small>
+            </td>
+            <td>
+                <div id="underfitting2"></div>
+                <small>Underfitting, nicht genug Training</small>
             </td>
         </tr>
-        <tr>
-            <td class="r90">
-                Low Bias
-            </td>
-            <td>
-                <div id="bullsEyeLBLV4"></div>
-                <small>Ideal: typically impossible</small>
-            </td>
-            <td>
-                <div id="bullsEyeLBHV4"></div>
-                <small>Overfitting</small>
-            </td>
-        </tr>
-        <tr>
-            <td class="r90">
-                High Bias
-            </td>
-            <td>
-                <div id="bullsEyeHBLV4"></div>
-                <small>Auch Overfitting? (aber anders?)</small>
-            </td>
-            <td>
-                <div id="bullsEyeHBHV4"></div>
-                <small>Underfitting</small>
-            </td>
-        </tr>
+        <!--<tr style="height: 20px"></tr>-->
+        <!--<tr>-->
+            <!--<th class="r90">-->
+            <!--Großer Fehler bei Testdaten / Crossvalidation-->
+
+            <!--</th>-->
+            <!--<td>-->
+                <!--<div id="bullsEyeHBLV4"></div>-->
+                <!--<small>Auch Overfitting? (aber anders?)</small>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div id="bullsEyeHBHV4"></div>-->
+                <!--<small>Underfitting</small>-->
+            <!--</td>-->
+        <!--</tr>-->
     </table>
     <script>
+Math.seedrandom(4);
+var sweetSpot = drawBoard("#sweetSpot");
 Math.seedrandom(3);
-drawScatter("#bullsEyeHBLV4", .5, .12);
-drawScatter("#bullsEyeLBLV4", .05, .12);
-drawScatter("#bullsEyeHBHV4", .7, .5);
-drawScatter("#bullsEyeLBHV4", .05, .5);
+drawHits(sweetSpot, .05, .12, false);
+Math.seedrandom(4);
+drawHits(sweetSpot, .05, .15, true);
+
+
+var overfitting = drawBoard("#overfitting");
+Math.seedrandom(3);
+drawHits(overfitting, .05, .08, false);
+Math.seedrandom(4);
+drawHits(overfitting, .05, .5, true);
+
+var underfitting = drawBoard("#underfitting");
+Math.seedrandom(3);
+Math.seedrandom(4);
+drawHits(underfitting, .5, .12, true);
+Math.seedrandom(3);
+drawHits(underfitting, .5, .08, false);
+
+var underfitting2 = drawBoard("#underfitting2");
+Math.seedrandom(3);
+//Math.seedrandom(4);
+drawHits(underfitting2, .4, .5, true);
+Math.seedrandom(4);
+drawHits(underfitting2, .3, .6, false);
+
+//drawScatter("#bullsEyeHBLV4", .5, .12);
+//drawScatter("#bullsEyeLBLV4", .05, .12);
+//drawScatter("#bullsEyeHBHV4", .7, .5);
+//drawScatter("#bullsEyeLBHV4", .05, .5);
     </script>
 
 </div>

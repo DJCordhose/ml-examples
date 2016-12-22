@@ -42,13 +42,15 @@ path {
   stroke-width: 2px;
 }
 
-.arrow {
-  fill: none;
-  stroke: navy;
-  fill: navy;
+.training {
+  stroke: black;
+  fill: black;
 }
 
-
+.test {
+  stroke: black;
+  fill: '#888888';
+}
 
 
 circle {
