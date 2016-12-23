@@ -42,7 +42,7 @@ path {
   stroke-width: 2px;
 }
 
-.training {
+.training, .real {
   stroke: black;
   fill: black;
 }

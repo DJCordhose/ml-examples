@@ -1,12 +1,11 @@
 function drawHits(svg, biasLevel, varLevel, test) {
-    var color = test ? '#888888' : 'black';
-    var clazz = test ? 'test' : 'training';
+    clazz= test ? test : 'training';
 
     var w = 200;
     var biasAngle = Math.random() * Math.PI * 2;
     var biasDist = w / 2 * biasLevel;
 
-    var n = 25;
+    var n = 15;
     var locs = [];
     for (var i = 0; i < n; i++) {
         var varAngle = Math.random() * Math.PI * 2;

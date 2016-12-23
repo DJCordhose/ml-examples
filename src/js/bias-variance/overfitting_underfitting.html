@@ -16,6 +16,118 @@
 	<body>
 		<div id="document">
 <div class='content-node image'><div class='image-content'>
+    <h2>High Bias und High Variance</h2>
+    <p>Stell dir vor wir sind auf dem Rummel - oder Dom wie wir zur Überraschung vieler in Hamburg sagen - beim Scheibenschießen mit einem Luftgewehr.
+    Da ich nie gut darin war, trainiere ich statt selbst zu schießen lieber einen Schießroboter.
+        Ich habe ein paar Trainingsversuche gemacht und lasse den Roboter mit unterschiedlichen Modellen schießen.
+    </p>
+    <p>Hier sind die Ergebnisse. </p>
+    <p>Und pssst, wir verraten dir schon jetzt ein Geheimnis: das gute Ergebnis ist gar nicht so einfach zu erreichen und
+        bei den beiden anderen Modellen haben wir jeweils klassische Fehler gemacht. Aber jetzt gucken wir uns erst einmal die Ergebnisse an.
+    Welches findest du am besten? Was stimmt mit den anderen beiden nicht? Was für Unterschiede siehst du?</p>
+
+    <table  class="snug">
+        <tr>
+            <td>
+                <div id="highBias"></div>
+                <small>Roboter Modell 1</small>
+            </td>
+            <td>
+                <div id="justRight"></div>
+                <small>Roboter Modell 2</small>
+            </td>
+            <td>
+                <div id="highVariance"></div>
+                <small>Roboter Modell 3</small>
+            </td>
+        </tr>
+    </table>
+    <script>
+Math.seedrandom(4);
+var justRight = drawBoard("#justRight");
+Math.seedrandom(3);
+drawHits(justRight, .05, .12);
+Math.seedrandom(4);
+drawHits(justRight, .05, .15, "real");
+
+
+var highVariance = drawBoard("#highVariance");
+Math.seedrandom(3);
+drawHits(highVariance, .01, .06);
+Math.seedrandom(4);
+drawHits(highVariance, .1, .7, "real");
+
+var highBias = drawBoard("#highBias");
+Math.seedrandom(3);
+drawHits(highBias, .4, .5, "real");
+Math.seedrandom(4);
+drawHits(highBias, .3, .6);
+
+    </script>
+
+    <p>Das war nicht sehr schwer, oder?
+        Natürlich ist das Modell 2 das beste. Hier treffen wir am meisten die Mitte. Der Fehler, also die Abweichung von der Mitte ist am geringsten.
+        Spannender sind tatsächlich die beiden weniger guten Modelle 1 und 3. Beide haben einen deutlich größeren Fehler, sie unterscheiden sind aber
+        doch deutlich von einander.
+    </p>
+    <p>
+        Mein Roboter in Modell 1 wirkt etwas bockig und scheint nicht viel gelernt zu haben. Obwohl er offensichtlich
+        schlecht schießt, stört ihn das nicht sonderlich. Trotz gegensätzlicher Information ohne jeglichen richtig guten Treffer
+    scheint er an seiner einfachen Meinung wie man
+    zu schießen hat, festzuhalten. Der Roboter ist also sehr voreingenommen, welches im Englischen dem Term <em>high bias</em> entspricht.
+        Und dieser Term ist für ein solches Fehlerbild tatsächlich gebräuchlich.
+    </p>
+
+    <p>Das dritte Modell wirkt sonderbar. Ein paar Schüsse treffen das Ziel sehr gut. Sogar besser und genauer als im insgesamt besten Modell 2.
+        Andere Schüsse sind aber wieder völlig daneben, ähnlich daneben wie im Modell 1. Hier variiert also die Qualität der Schüsse sehr, man
+        spricht daher auch von <em>high variance</em>.
+    </p>
+
+    <p>Hier nochmal dieselben Ergebnisse, aber mit den ensprechenden Ausdrücken mit denen man solche Fehlerbilder bezeichnet. Für das gute Modell in der
+        Mitte gibt es keinen einheitlichen Term, machnmal nennt man ihn den <em>Sweet Spot</em> oder <em>Just Right</em>:</p>
+    <div id="model2">
+    <table  class="snug">
+        <tr>
+            <td>
+                <div class="highBias"></div>
+                <small><strong>High Bias</strong><br>der sture Roboter</small>
+            </td>
+            <td>
+                <div class="justRight"></div>
+                <small><strong>Sweet Spot</strong><br> kontinuierlich gute Leistung</small>
+            </td>
+            <td>
+                <div class="highVariance"></div>
+                <small><strong>High Variance</strong><br> mal richtig gut, mal schlecht</small>
+            </td>
+        </tr>
+    </table>
+    <script>
+Math.seedrandom(4);
+var justRight = drawBoard("#model2 .justRight");
+Math.seedrandom(3);
+drawHits(justRight, .05, .12);
+Math.seedrandom(4);
+drawHits(justRight, .05, .15, "real");
+
+
+var highVariance = drawBoard("#model2 .highVariance");
+Math.seedrandom(3);
+drawHits(highVariance, .01, .06);
+Math.seedrandom(4);
+drawHits(highVariance, .1, .7, "real");
+
+var highBias = drawBoard("#model2 .highBias");
+Math.seedrandom(3);
+drawHits(highBias, .4, .5, "real");
+Math.seedrandom(4);
+drawHits(highBias, .3, .6);
+
+    </script>
+    </div>
+    <p>Wie es zu diesen Trefferbildern kommt klären wir im Folgenden.</p>
+    <h2>Training und Validierung</h2>
+    TODO
     <h2>Over- und Underfitting</h2>
     <p>Die Komplexität des Modells bestimmt, wie gut es die Realität abbilden kann.
         Das kann man anhand eines Regressions-Beispiels sehen, in dem wir versuchen, eine Menge von Datenpunkten mit einer Funktion zu beschreiben.
@@ -88,16 +200,16 @@
 Math.seedrandom(4);
 var sweetSpot = drawBoard("#sweetSpot");
 Math.seedrandom(3);
-drawHits(sweetSpot, .05, .12, false);
+drawHits(sweetSpot, .05, .12);
 Math.seedrandom(4);
-drawHits(sweetSpot, .05, .15, true);
+drawHits(sweetSpot, .05, .15, "test");
 
 
 var overfitting = drawBoard("#overfitting");
 Math.seedrandom(3);
-drawHits(overfitting, .01, .06, false);
+drawHits(overfitting, .01, .06);
 Math.seedrandom(4);
-drawHits(overfitting, .05, .5, true);
+drawHits(overfitting, .1, .7, "test");
 
 //var underfitting = drawBoard("#underfitting");
 //Math.seedrandom(3);
@@ -109,7 +221,7 @@ drawHits(overfitting, .05, .5, true);
 var underfitting2 = drawBoard("#underfitting2");
 Math.seedrandom(3);
 //Math.seedrandom(4);
-drawHits(underfitting2, .4, .5, true);
+drawHits(underfitting2, .4, .5, "test");
 Math.seedrandom(4);
 drawHits(underfitting2, .3, .6, false);
 
@@ -129,6 +241,8 @@ drawHits(underfitting2, .3, .6, false);
     <p>Kehren wir nun zu unserem Beispiel der Schüsse auf dem Rummel zurück.
         Auch hier haben wir ein Regressions-Beispiel, bei dem wir eine Reihe von Features auf Schußposition (x,y,z) und Neigung des Laufs (x, y) abbilden.
         Das Bild mit der Zielscheibe funktioniert hier natürlich noch besser, da man sich jeden Datenpunkt tatsächlich wie einen Schuß vorstellen kann. Die schwarzen Punkte wären dann Schüsse unter bekannten (idealen) Bedingungen, mit denen man das eigenen Schießen trainiert, während die grauen die auf dem Rummel abgegebenen Schüsse sein könnten.</p>
+
+    <h2>Feature Reduktion und Regularisierung</h2>
 </div>
 </div>
 <br>
