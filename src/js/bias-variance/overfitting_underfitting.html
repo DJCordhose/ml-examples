@@ -125,9 +125,33 @@ drawHits(highBias, .3, .6);
 
     </script>
     </div>
-    <p>Wie es zu diesen Trefferbildern kommt klären wir im Folgenden.</p>
-    <h2>Training und Validierung</h2>
-    TODO
+    <p>Wie es zu diesen Trefferbildern gekommen ist, klären wir im Folgenden.</p>
+    <h2>Featureauswahl</h2>
+    Wir versuchen nun den Fehler unserer Schüsse zu minimieren.
+    Wir erstellen dazu ein Modell von der Realität. Das Modell beschreibt die Realität nicht im allgemeinen,
+    sondern nur so weit, wie es beim Zielen auf die Zielscheibe hilfreich ist. Dazu brauchen wir zum einen
+    eine Entscheidung welchen Variablen denn überhaupt eine Auswirkung auf unseren Schuss haben.
+    Neben den offensichtlichen Variablen wie Position des Gewehrs und Neigung nach oben/unten, links/rechts wäre auch noch
+    die Witterung, also z.b. Temperatur, Wind und Luftfeuchtigkeit denkbar.
+    Aber woher wissen wir eigentlich, welche Variablen wichtig sind? Und brauchen wir alle aufgezählten?
+
+    Manchmal ist es noch nicht einmal klar, was Eingabe und was Ausgabe ist.
+
+    TODO: HIER GRAFIKEN AUS NOTEBOOK EINBAUEN
+
+    <h2>Modell, Training und Lineare Regression</h2>
+    Unser Modell beschreibt nun, welchen Einfluss die ausgewählten Variablen, auch Features genannt, darauf haben,
+    wo der Schuss die Scheibe trifft. Ziel ist es dabei, den Ort so zu bestimmen, dass er jeweils die Mitte ist, d.h.
+    der Fehler möglichst gering ist.
+    Dazu geben wir eine Reihe von Schüssen mit auf bestimmte weise gesetzten Features
+    auf eine Trainingszielscheibe ab und merken uns die Ergebnisse.
+    TODO:
+    Solch einen Ansatz nennt man auch eine Lernstrategie. Andere Ansätze lernst du in Kapitel 3 'Supervised Learning' kennen.
+    Dies ist eine recht einfache Art,
+    <h2>Validierung</h2>
+Wie gut unser Training funktioniert hat, können wir nur durch Experimente herausfinden. Wir nutzen also unser Modell,
+    um Schüsse auf eine Scheibe abzugeben. Unsere Annahme ist dabei
+
     <h2>Over- und Underfitting</h2>
     <p>Die Komplexität des Modells bestimmt, wie gut es die Realität abbilden kann.
         Das kann man anhand eines Regressions-Beispiels sehen, in dem wir versuchen, eine Menge von Datenpunkten mit einer Funktion zu beschreiben.
@@ -243,6 +267,8 @@ drawHits(underfitting2, .3, .6, false);
         Das Bild mit der Zielscheibe funktioniert hier natürlich noch besser, da man sich jeden Datenpunkt tatsächlich wie einen Schuß vorstellen kann. Die schwarzen Punkte wären dann Schüsse unter bekannten (idealen) Bedingungen, mit denen man das eigenen Schießen trainiert, während die grauen die auf dem Rummel abgegebenen Schüsse sein könnten.</p>
 
     <h2>Feature Reduktion und Regularisierung</h2>
+    Wie man dies
+    LIEBER HIER WEGLASSEN UND NUR SPÄTER IN KAPITEL 7 machen???
 </div>
 </div>
 <br>
