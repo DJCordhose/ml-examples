@@ -18,7 +18,8 @@
 <div class='content-node image'><div class='image-content'>
     <h2>High Bias und High Variance</h2>
     <p>Stell dir vor wir sind auf dem Rummel - oder Dom wie wir zur Überraschung vieler in Hamburg sagen - beim Scheibenschießen mit einem Luftgewehr.
-    Da ich nie gut darin war, trainiere ich statt selbst zu schießen lieber einen Schießroboter.
+        Da ich nie gut darin war, trainiere ich statt selbst zu schießen lieber einen Schießroboter.</p>
+    <p>
         Ich habe ein paar Trainingsversuche gemacht und lasse den Roboter mit unterschiedlichen Modellen schießen.
     </p>
     <p>Hier sind die Ergebnisse. </p>
@@ -30,38 +31,54 @@
         <tr>
             <td>
                 <div id="highBias"></div>
-                <small>Roboter Modell 1</small>
+                <small>Roboter 1 (Chi Nhan)</small>
             </td>
             <td>
                 <div id="justRight"></div>
-                <small>Roboter Modell 2</small>
+                <small>Roboter 2 (Du)</small>
             </td>
             <td>
                 <div id="highVariance"></div>
-                <small>Roboter Modell 3</small>
+                <small>Roboter 3 (Olli)</small>
             </td>
         </tr>
     </table>
     <script>
-Math.seedrandom(4);
+const justRightOffsetTraining = .1;
+const justRightScatterTraining = .15;
+const justRightOffsetTest = .15;
+const justRightScatterTest = .25;
+
+const highVarianceOffsetTraining = .0;
+const hightVarianceScatterTraining = .08;
+const highVarianceOffsetTest = .1;
+const highVarianceScatterTest = .8;
+
+const highBiasOffsetTest = .4;
+const highBiasScatterTest = .5;
+const highBiasOffsetTraining = .3;
+const highBiasScatterTraining = .6;
+
+    </script>
+    <script>
 var justRight = drawBoard("#justRight");
 Math.seedrandom(3);
-drawHits(justRight, .05, .12);
+drawHits(justRight, justRightOffsetTraining, justRightScatterTraining);
 Math.seedrandom(4);
-drawHits(justRight, .05, .15, "real");
+drawHits(justRight, justRightOffsetTest, justRightScatterTest, "real");
 
 
 var highVariance = drawBoard("#highVariance");
 Math.seedrandom(3);
-drawHits(highVariance, .01, .06);
+drawHits(highVariance, highVarianceOffsetTraining, hightVarianceScatterTraining);
 Math.seedrandom(4);
-drawHits(highVariance, .1, .7, "real");
+drawHits(highVariance, highVarianceOffsetTest, highVarianceScatterTest, "real");
 
 var highBias = drawBoard("#highBias");
 Math.seedrandom(3);
-drawHits(highBias, .4, .5, "real");
+drawHits(highBias, highBiasOffsetTraining, highBiasScatterTraining, "real");
 Math.seedrandom(4);
-drawHits(highBias, .3, .6);
+drawHits(highBias, highBiasOffsetTest, highBiasScatterTest);
 
     </script>
 
@@ -106,22 +123,22 @@ drawHits(highBias, .3, .6);
 Math.seedrandom(4);
 var justRight = drawBoard("#model2 .justRight");
 Math.seedrandom(3);
-drawHits(justRight, .05, .12);
+drawHits(justRight, justRightOffsetTraining, justRightScatterTraining);
 Math.seedrandom(4);
-drawHits(justRight, .05, .15, "real");
+drawHits(justRight, justRightOffsetTest, justRightScatterTest, "real");
 
 
 var highVariance = drawBoard("#model2 .highVariance");
 Math.seedrandom(3);
-drawHits(highVariance, .01, .06);
+drawHits(highVariance, highVarianceOffsetTraining, hightVarianceScatterTraining);
 Math.seedrandom(4);
-drawHits(highVariance, .1, .7, "real");
+drawHits(highVariance, highVarianceOffsetTest, highVarianceScatterTest, "real");
 
 var highBias = drawBoard("#model2 .highBias");
 Math.seedrandom(3);
-drawHits(highBias, .4, .5, "real");
+drawHits(highBias, highBiasOffsetTest, highBiasScatterTest, "real");
 Math.seedrandom(4);
-drawHits(highBias, .3, .6);
+drawHits(highBias, highBiasOffsetTraining, highBiasScatterTraining);
 
     </script>
     </div>
@@ -134,6 +151,31 @@ drawHits(highBias, .3, .6);
     Neben den offensichtlichen Variablen wie Position des Gewehrs und Neigung nach oben/unten, links/rechts wäre auch noch
     die Witterung, also z.b. Temperatur, Wind und Luftfeuchtigkeit denkbar.
     Aber woher wissen wir eigentlich, welche Variablen wichtig sind? Und brauchen wir alle aufgezählten?
+
+
+    Nehmen wir der Einfachheit halber an, dass wir Zugriff auf einen wunderbar gepflegten und stimmigen Datensatz
+    haben, der anhand Auskunft darüber gibt, welche Einflussfaktoren es bei einem Schuss gibt.
+
+    Fußnote: In Kapitel 2
+    werden wir sehen übrigens, dass ein solcher Satz an Daten meist nur ein frommer Wunsch ist und was man tut,
+    um ihn diesem Ziel möglichst nahe zu kommen.
+
+    Die Einflussfaktoren, die wir für unser Modell und damit unseren Roboter nutzen nennen wie dabei Features.
+
+    Nehmen wir an, wir haben Datensätze mit den folgenden Einflussfaktoren
+    1. Windstärke und Richtung
+    2. Temperatur
+    3. Luftfeuchtigkeit
+    4. Position des Gewehrs / Entfernung zur Zielscheibe
+    5. Neigung nach oben/unten
+    6. Neigung links/rechts
+    7. Anzeige des Visiers des Gewehrs
+
+
+    Wir stellen dabei fest: Manche der Faktoren können wir beeinflussen, andere nicht.
+    Manche Faktoren scheinen von anderen anzuhängen. Andere ändern sich überhaupt nicht.
+
+    Das ist verwirrend. Treten wir mal einen Schritt zurück: Wir wollen einen Roboter bauen
 
     Manchmal ist es noch nicht einmal klar, was Eingabe und was Ausgabe ist.
 
@@ -221,19 +263,18 @@ Wie gut unser Training funktioniert hat, können wir nur durch Experimente herau
         <!--</tr>-->
     </table>
     <script>
-Math.seedrandom(4);
-var sweetSpot = drawBoard("#sweetSpot");
+var justRight = drawBoard("#sweetSpot");
 Math.seedrandom(3);
-drawHits(sweetSpot, .05, .12);
+drawHits(justRight, justRightOffsetTraining, justRightScatterTraining);
 Math.seedrandom(4);
-drawHits(sweetSpot, .05, .15, "test");
+drawHits(justRight, justRightOffsetTest, justRightScatterTest, "test");
 
 
-var overfitting = drawBoard("#overfitting");
+var highVariance = drawBoard("#overfitting");
 Math.seedrandom(3);
-drawHits(overfitting, .01, .06);
+drawHits(highVariance, highVarianceOffsetTraining, hightVarianceScatterTraining);
 Math.seedrandom(4);
-drawHits(overfitting, .1, .7, "test");
+drawHits(highVariance, highVarianceOffsetTest, highVarianceScatterTest, "test");
 
 //var underfitting = drawBoard("#underfitting");
 //Math.seedrandom(3);
@@ -242,12 +283,11 @@ drawHits(overfitting, .1, .7, "test");
 //Math.seedrandom(3);
 //drawHits(underfitting, .5, .08, false);
 
-var underfitting2 = drawBoard("#underfitting2");
+var highBias = drawBoard("#underfitting2");
 Math.seedrandom(3);
-//Math.seedrandom(4);
-drawHits(underfitting2, .4, .5, "test");
+drawHits(highBias, highBiasOffsetTraining, highBiasScatterTraining, "test");
 Math.seedrandom(4);
-drawHits(underfitting2, .3, .6, false);
+drawHits(highBias, highBiasOffsetTest, highBiasScatterTest);
 
 //drawScatter("#bullsEyeHBLV4", .5, .12);
 //drawScatter("#bullsEyeLBLV4", .05, .12);
